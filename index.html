@@ -16,7 +16,7 @@
 <body>
 
     <div class="example-container">
-        <a-scene mindar-face embedded color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
+        <a-scene mindar-face embedded color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights: true" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
             
             <a-assets>
                 <a-asset-item id="crownModel" src="objects/crown_.glb"></a-asset-item>
@@ -24,18 +24,22 @@
 
             <a-camera active="true" position="0 0 0"></a-camera>
 
-            <!-- Usamos el anchorIndex 10 (frente/arriba de la cabeza) -->
+            <!-- Luces ambientales y direccionales para darle brillo metálico -->
+            <a-light type="ambient" intensity="1.5"></a-light>
+            <a-light type="directional" position="0 1 2" intensity="2"></a-light>
+
+            <!-- Anclaje al rostro -->
             <a-entity mindar-face-target="anchorIndex: 10">
                 <!-- 
-                  - scale: Aumentado a "3.5" (puedes subirlo a 4 o 5 si sigue pequeña)
-                  - rotation: Ajustado para orientar la corona hacia el frente correctamente
-                  - position: Ajustado para ubicarla justo sobre el cabello/frente
+                  - scale: Aumentado a "8.5" para que tenga el tamaño real de una corona sobre la cabeza.
+                  - position: "0 -0.2 -0.1" (baja la corona para que no flote arriba).
+                  - rotation: "0 180 0" para corregir la dirección.
                 -->
                 <a-gltf-model 
                     src="#crownModel" 
-                    position="0 0.1 0" 
+                    position="0 -0.2 -0.1" 
                     rotation="0 180 0" 
-                    scale="3.5 3.5 3.5">
+                    scale="8.5 8.5 8.5">
                 </a-gltf-model>
             </a-entity>
 
