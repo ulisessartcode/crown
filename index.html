@@ -9,16 +9,40 @@
     <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-face-aframe.prod.js"></script>
 
     <script>
-    // Componente universal para volver cualquier modelo en un oclusor de profundidad invisible
+    // Componente para volver la esfera procedural en un oclusor de profundidad invisible
     AFRAME.registerComponent('occluder-material', {
+        init: function () {
+            // Esperamos a que la geometría/malla de la primitiva esté lista
+            const applyOccluder = () => {
+                const mesh = this.el.getObject3D('mesh');
+                if (mesh) {
+                    mesh.traverse((node) => {
+                        if (node.isMesh) {
+                            node.material.colorWrite = false; // Invisible (no pinta color en pantalla)
+                            node.material.depthWrite = true;  // Mantiene la profundidad para ocultar la corona por detrás
+                        }
+                    });
+                }
+            };
+
+            this.el.addEventListener('loaded', applyOccluder);
+            setTimeout(applyOccluder, 500); // Refuerzo por si carga antes del evento
+        }
+    });
+
+    // Componente para la capa pálida transparente sobre tu rostro real
+    AFRAME.registerComponent('pale-skin-overlay', {
         init: function () {
             this.el.addEventListener('model-loaded', () => {
                 const mesh = this.el.getObject3D('mesh');
                 if (mesh) {
                     mesh.traverse((node) => {
                         if (node.isMesh) {
-                            node.material.colorWrite = false; // Lo hace invisible (no pinta color)
-                            node.material.depthWrite = true;  // Pero mantiene la profundidad para tapar objetos
+                            node.material.color.set('#f0f0f0'); // Tono blanco pálido elegante
+                            node.material.transparent = true;
+                            node.material.opacity = 0.45;       // Ajusta de 0.3 a 0.6 para que se vea tu piel real debajo
+                            node.material.roughness = 1.0;
+                            node.material.depthWrite = false;   // Evita conflictos de profundidad
                         }
                     });
                 }
@@ -40,7 +64,6 @@
             <a-assets>
                 <a-asset-item id="crownModel" src="objects/crown_.glb"></a-asset-item>
                 <a-asset-item id="espinaModel" src="objects/espina_.glb"></a-asset-item>
-                <!-- CORREGIDO: Declaramos el faceMeshModel que estás usando abajo -->
                 <a-asset-item id="faceMeshModel" src="objects/faceMesh.glb"></a-asset-item>
             </a-assets>
 
@@ -53,16 +76,25 @@
             <!-- Anclaje al rostro -->
             <a-entity mindar-face-target="anchorIndex: 10">
                 
-                <!-- 1. El FaceMesh se convierte en tu oclusor perfecto en tiempo real -->
+                <!-- 1. OCLUSOR PROCEDURAL (Esfera nativa de A-Frame sin archivos externos) -->
+                <!-- Puedes ajustar 'radius' y 'scale' si necesitas que cubra más o menos espacio de tu cabeza/pelo -->
+                <a-sphere 
+                    position="0 0.04 -0.05" 
+                    radius="0.12" 
+                    scale="1.1 1.4 1.2"
+                    occluder-material>
+                </a-sphere>
+
+                <!-- 2. EL FACEMESH: Tinte blanco pálido transparente sobre tus facciones reales -->
                 <a-gltf-model 
                     src="#faceMeshModel" 
                     position="0 -0.68 -0.1" 
                     rotation="0 180 0" 
-                    scale="9 9 9"
-                    occluder-material>
+                    scale="8.5 8.5 8.5"
+                    pale-skin-overlay>
                 </a-gltf-model>
 
-                <!-- 2. La Corona de atrás -->
+                <!-- 3. LA CORONA DE ATRÁS (Se ocultará limpiamente al chocar con la esfera oclusora) -->
                 <a-gltf-model 
                     src="#crownModel" 
                     position="0.0 -0.68 -0.3" 
@@ -70,7 +102,7 @@
                     scale="8.5 8.5 8.5">
                 </a-gltf-model>
 
-                <!-- 3. La parte delantera sobre la nariz (espina_.glb) -->
+                <!-- 4. LA ESPINA DELANTERA (Se dibuja siempre por delante de tu rostro) -->
                 <a-gltf-model 
                     src="#espinaModel" 
                     position="-0.0 -0.68 -0.1" 
