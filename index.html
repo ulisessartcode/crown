@@ -9,16 +9,16 @@
     <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-face-aframe.prod.js"></script>
 
     <script>
-    // 1. Oclusor invisible para tapar la corona detrás de la cabeza
+    // Componente universal para volver cualquier geometría en oclusor invisible
     AFRAME.registerComponent('occluder-material', {
         init: function () {
-            this.el.addEventListener('model-loaded', () => {
+            this.el.addEventListener('loaded', () => {
                 const mesh = this.el.getObject3D('mesh');
                 if (mesh) {
                     mesh.traverse((node) => {
                         if (node.isMesh) {
-                            node.material.colorWrite = false;
-                            node.material.depthWrite = true;
+                            node.material.colorWrite = false; // Invisible
+                            node.material.depthWrite = true;  // Mantiene la profundidad para tapar la corona
                         }
                     });
                 }
@@ -26,7 +26,7 @@
         }
     });
 
-    // 2. Capa semi-transparente para dar el tono pálido sobre la piel real
+    // Componente para la capa pálida transparente sobre tu rostro real
     AFRAME.registerComponent('pale-skin-overlay', {
         init: function () {
             this.el.addEventListener('model-loaded', () => {
@@ -34,11 +34,11 @@
                 if (mesh) {
                     mesh.traverse((node) => {
                         if (node.isMesh) {
-                            node.material.color.set('#f0f0f0'); // Tono blanco pálido
+                            node.material.color.set('#f0f0f0');
                             node.material.transparent = true;
-                            node.material.opacity = 0.45;       // Ajusta de 0.3 a 0.6 según qué tan pálido lo quieras
+                            node.material.opacity = 0.45;
                             node.material.roughness = 1.0;
-                            node.material.depthWrite = false;   // Evita conflictos con la profundidad de la cámara
+                            node.material.depthWrite = false;
                         }
                     });
                 }
@@ -60,7 +60,6 @@
             <a-assets>
                 <a-asset-item id="crownModel" src="objects/crown_.glb"></a-asset-item>
                 <a-asset-item id="espinaModel" src="objects/espina_.glb"></a-asset-item>
-                <a-asset-item id="occluderModel" src="objects/head_occluder.glb"></a-asset-item>
                 <a-asset-item id="faceMeshModel" src="objects/faceMesh.glb"></a-asset-item>
             </a-assets>
 
@@ -73,15 +72,14 @@
             <!-- Anclaje al rostro -->
             <a-entity mindar-face-target="anchorIndex: 10">
                 
-                <!-- 1. El Oclusor invisible (head_occluder): oculta la corona por detrás de la cabeza -->
-                <a-gltf-model 
-                    src="#occluderModel" 
-                    position="0 -0.68 -0.1" 
-                    rotation="0 180 0" 
-                    scale="8.8 8.8 8.8"
+                <!-- 1. Oclusor nativo (Esfera 3D generada por código sin archivos .glb externos) -->
+                <a-sphere 
+                    position="0 0.05 -0.05" 
+                    radius="0.13" 
+                    scale="1 1.3 1.1"
                     occluder-material>
-                </a-gltf-model>
-                
+                </a-sphere>
+
                 <!-- 2. El FaceMesh: aplica el tinte blanco pálido transparente sobre tu piel real -->
                 <a-gltf-model 
                     src="#faceMeshModel" 
