@@ -8,6 +8,25 @@
     <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-face-aframe.prod.js"></script>
 
+    <script>
+        // Componente para hacer que el oclusor sea invisible pero oculte la parte trasera
+        AFRAME.registerComponent('occluder-material', {
+            init: function () {
+                this.el.addEventListener('model-loaded', () => {
+                    const mesh = this.el.getObject3D('mesh');
+                    if (mesh) {
+                        mesh.traverse((node) => {
+                            if (node.isMesh) {
+                                node.material.colorWrite = false; // Oculta el color, solo deja la profundidad
+                                node.material.depthWrite = true;
+                            }
+                        });
+                    }
+                });
+            }
+        });
+    </script>
+
     <style>
         body { margin: 0; overflow: hidden; background-color: #000; }
         .example-container { position: absolute; width: 100%; height: 100%; }
@@ -20,6 +39,8 @@
             
             <a-assets>
                 <a-asset-item id="crownModel" src="objects/crown_.glb"></a-asset-item>
+                <!-- 1. Declaramos el oclusor en los assets -->
+                <a-asset-item id="occluderModel" src="objects/head_occluder.glb"></a-asset-item>
             </a-assets>
 
             <a-camera active="true" position="0 0 0"></a-camera>
@@ -31,10 +52,18 @@
             <!-- Anclaje al rostro -->
             <a-entity mindar-face-target="anchorIndex: 10">
                 
-                <!-- Únicamente la corona con la escala 8.5 correcta y orientada -->
+                <!-- 2. Añadimos el oclusor con el componente invisible -->
+                <a-gltf-model 
+                    src="#occluderModel" 
+                    position="0 -0.2 0" 
+                    scale="0.065 0.065 0.065"
+                    occluder-material>
+                </a-gltf-model>
+
+                <!-- 3. Tu corona con la escala y posición exacta que ya tienes -->
                 <a-gltf-model 
                     src="#crownModel" 
-                   position="0 -0.68 -0.1" 
+                    position="0 -0.68 -0.1" 
                     rotation="0 180 0" 
                     scale="8.5 8.5 8.5">
                 </a-gltf-model>
