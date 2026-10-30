@@ -26,7 +26,7 @@
             }
         });
 
-        // NUEVO: Componente para pintar la cara de blanco y los ojos de negro
+        // Componente para pintar la cara de blanco translúcido y los ojos de negro
         AFRAME.registerComponent('face-painter', {
             init: function () {
                 this.el.addEventListener('model-loaded', () => {
@@ -34,12 +34,16 @@
                     if (mesh) {
                         mesh.traverse((node) => {
                             if (node.isMesh) {
-                                // Si la malla pertenece a los ojos, píntala de negro
+                                // Si la malla pertenece a los ojos, píntala de negro sólido
                                 if (node.name.toLowerCase().includes('eye') || node.name.toLowerCase().includes('iris')) {
                                     node.material = new THREE.MeshBasicMaterial({ color: 0x000000 });
                                 } else {
-                                    // El resto de la cara se pinta de blanco
-                                    node.material = new THREE.MeshBasicMaterial({ color: 0xffffff });
+                                    // La cara se pinta de blanco con transparencia (opacity: 0.7 para que se note tu piel)
+                                    node.material = new THREE.MeshBasicMaterial({ 
+                                        color: 0xffffff, 
+                                        transparent: true, 
+                                        opacity: 0.7 
+                                    });
                                 }
                             }
                         });
@@ -62,7 +66,6 @@
             <a-assets>
                 <a-asset-item id="crownModel" src="objects/crown_.glb"></a-asset-item>
                 <a-asset-item id="occluderModel" src="objects/head_occluder.glb"></a-asset-item>
-                <!-- NUEVO: Declaramos el FaceMesh en los assets -->
                 <a-asset-item id="faceMeshModel" src="objects/faceMesh.glb"></a-asset-item>
             </a-assets>
 
@@ -84,7 +87,7 @@
                     occluder-material>
                 </a-gltf-model>
 
-                <!-- NUEVO 2. El FaceMesh pintado de blanco con ojos negros -->
+                <!-- 2. El FaceMesh pintado de blanco translúcido con ojos negros -->
                 <a-gltf-model 
                     src="#faceMeshModel" 
                     position="0 -0.68 -0.1" 
