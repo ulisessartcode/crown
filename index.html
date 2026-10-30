@@ -3,49 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Filtro de Corona AR - Web</title>
+    <title>Filtro de Corona AR</title>
     
-    <!-- Cargar A-Frame y el componente de MindAR para Face Tracking -->
     <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-face-aframe.prod.js"></script>
 
     <style>
-        body {
-            margin: 0;
-            overflow: hidden;
-            background-color: #000;
-        }
-        /* Estilo para los botones de permisos de cámara */
-        .example-container {
-            overflow: hidden;
-            position: absolute;
-            width: 100%;
-            height: 100%;
-        }
+        body { margin: 0; overflow: hidden; background-color: #000; }
+        .example-container { position: absolute; width: 100%; height: 100%; }
     </style>
 </head>
 <body>
 
     <div class="example-container">
-        <!-- Escena de A-Frame con MindAR Face Target -->
         <a-scene mindar-face embedded color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
             
-            <!-- Recursos (Cargamos tu modelo 3D desde la ruta de GitHub) -->
             <a-assets>
                 <a-asset-item id="crownModel" src="objects/crown_.glb"></a-asset-item>
             </a-assets>
 
-            <!-- Cámara de la escena -->
             <a-camera active="true" position="0 0 0"></a-camera>
 
-            <!-- Anclaje al rostro (anchor index="168" suele ser la frente o parte superior de la cabeza en MindAR) -->
+            <!-- Usamos el anchorIndex 10 (frente/arriba de la cabeza) -->
             <a-entity mindar-face-target="anchorIndex: 10">
-                <!-- Colocamos el modelo 3D de la corona. Puedes ajustar la posición (position), rotación (rotation) y tamaño (scale) -->
+                <!-- 
+                  - scale: Aumentado a "3.5" (puedes subirlo a 4 o 5 si sigue pequeña)
+                  - rotation: Ajustado para orientar la corona hacia el frente correctamente
+                  - position: Ajustado para ubicarla justo sobre el cabello/frente
+                -->
                 <a-gltf-model 
                     src="#crownModel" 
-                    position="0 0.4 -0.2" 
-                    rotation="0 0 0" 
-                    scale="0.8 0.8 0.8">
+                    position="0 0.1 0" 
+                    rotation="0 180 0" 
+                    scale="3.5 3.5 3.5">
                 </a-gltf-model>
             </a-entity>
 
