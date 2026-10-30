@@ -17,7 +17,7 @@
                     if (mesh) {
                         mesh.traverse((node) => {
                             if (node.isMesh) {
-                                node.material.colorWrite = false; // Oculta el color, solo deja la profundidad
+                                node.material.colorWrite = false;
                                 node.material.depthWrite = true;
                             }
                         });
@@ -26,7 +26,7 @@
             }
         });
 
-        // Componente para pintar la cara de blanco translúcido y los ojos de negro
+        // Componente simplificado solo para la base de la cara
         AFRAME.registerComponent('face-painter', {
             init: function () {
                 this.el.addEventListener('model-loaded', () => {
@@ -34,17 +34,11 @@
                     if (mesh) {
                         mesh.traverse((node) => {
                             if (node.isMesh) {
-                                // Si la malla pertenece a los ojos, píntala de negro sólido
-                                if (node.name.toLowerCase().includes('eye') || node.name.toLowerCase().includes('iris')) {
-                                    node.material = new THREE.MeshBasicMaterial({ color: 0x000000 });
-                                } else {
-                                    // La cara se pinta de blanco con transparencia (opacity: 0.7 para que se note tu piel)
-                                    node.material = new THREE.MeshBasicMaterial({ 
-                                        color: 0xffffff, 
-                                        transparent: true, 
-                                        opacity: 0.7 
-                                    });
-                                }
+                                node.material = new THREE.MeshBasicMaterial({ 
+                                    color: 0xffffff, 
+                                    transparent: true, 
+                                    opacity: 0.7 
+                                });
                             }
                         });
                     }
@@ -87,7 +81,7 @@
                     occluder-material>
                 </a-gltf-model>
 
-                <!-- 2. El FaceMesh pintado de blanco translúcido con ojos negros -->
+                <!-- 2. La malla base de la cara -->
                 <a-gltf-model 
                     src="#faceMeshModel" 
                     position="0 -0.68 -0.1" 
