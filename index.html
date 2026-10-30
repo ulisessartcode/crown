@@ -39,7 +39,6 @@
             
             <a-assets>
                 <a-asset-item id="crownModel" src="objects/crown_.glb"></a-asset-item>
-                <!-- NUEVO: Declaramos el archivo de la parte delantera/nariz -->
                 <a-asset-item id="espinaModel" src="objects/espina_.glb"></a-asset-item>
                 <a-asset-item id="occluderModel" src="objects/head_occluder.glb"></a-asset-item>
             </a-assets>
@@ -70,13 +69,27 @@
                     scale="8.5 8.5 8.5">
                 </a-gltf-model>
 
-                <!-- NUEVO 3. La parte delantera sobre la nariz (espina_.glb) -->
+                <!-- 3. La parte delantera sobre la nariz (espina_.glb) -->
                 <a-gltf-model 
                     src="#espinaModel" 
                     position="-0.0 -0.68 -0.1" 
                     rotation="0 180 0" 
                     scale="8.5 8.5 8.5">
                 </a-gltf-model>
+
+                <!-- 4. Ojo izquierdo (Negro) -->
+                <a-sphere 
+                    position="0.03 0.05 -0.05" 
+                    scale="0.012 0.012 0.012" 
+                    material="color: #000000; roughness: 0.1">
+                </a-sphere>
+
+                <!-- 5. Ojo derecho (Negro) -->
+                <a-sphere 
+                    position="-0.03 0.05 -0.05" 
+                    scale="0.012 0.012 0.012" 
+                    material="color: #000000; roughness: 0.1">
+                </a-sphere>
 
             </a-entity>
 
