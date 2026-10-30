@@ -25,26 +25,6 @@
                 });
             }
         });
-
-        // Componente simplificado solo para la base de la cara
-        AFRAME.registerComponent('face-painter', {
-            init: function () {
-                this.el.addEventListener('model-loaded', () => {
-                    const mesh = this.el.getObject3D('mesh');
-                    if (mesh) {
-                        mesh.traverse((node) => {
-                            if (node.isMesh) {
-                                node.material = new THREE.MeshBasicMaterial({ 
-                                    color: 0xffffff, 
-                                    transparent: true, 
-                                    opacity: 0.7 
-                                });
-                            }
-                        });
-                    }
-                });
-            }
-        });
     </script>
 
     <style>
@@ -60,7 +40,6 @@
             <a-assets>
                 <a-asset-item id="crownModel" src="objects/crown_.glb"></a-asset-item>
                 <a-asset-item id="occluderModel" src="objects/head_occluder.glb"></a-asset-item>
-                <a-asset-item id="faceMeshModel" src="objects/faceMesh.glb"></a-asset-item>
             </a-assets>
 
             <a-camera active="true" position="0 0 0"></a-camera>
@@ -75,22 +54,13 @@
                 <!-- 1. El Oclusor invisible -->
                 <a-gltf-model 
                     src="#occluderModel" 
-                    position="-0.07 -0.8 -0.1" 
+                    position="-0.07 -0.68 -0.1" 
                     rotation="0 180 0" 
                     scale="8.5 8.5 8.5"
                     occluder-material>
                 </a-gltf-model>
 
-                <!-- 2. La malla base de la cara -->
-                <a-gltf-model 
-                    src="#faceMeshModel" 
-                    position="-0.07 -0.58 -0.1" 
-                    rotation="0 180 0" 
-                    scale="8.5 8.5 8.5"
-                    face-painter>
-                </a-gltf-model>
-
-                <!-- 3. Tu corona -->
+                <!-- 2. Tu corona -->
                 <a-gltf-model 
                     src="#crownModel" 
                     position="-0.07 -0.68 -0.1" 
