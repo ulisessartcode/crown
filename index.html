@@ -20,36 +20,33 @@
             
             <a-assets>
                 <a-asset-item id="crownModel" src="objects/crown_.glb"></a-asset-item>
-                <!-- Añadimos el oclusor aquí -->
                 <a-asset-item id="occluderModel" src="objects/head_occluder.glb"></a-asset-item>
             </a-assets>
 
             <a-camera active="true" position="0 0 0"></a-camera>
 
-            <!-- Luces ambientales y direccionales -->
+            <!-- Luces -->
             <a-light type="ambient" intensity="1.5"></a-light>
             <a-light type="directional" position="0 1 2" intensity="2"></a-light>
 
-<!-- Anclaje al rostro -->
+            <!-- Anclaje al rostro -->
             <a-entity mindar-face-target="anchorIndex: 10">
                 
-                <!-- 1. El Oclusor -->
+                <!-- 1. Oclusor invisible usando opacidad total para evitar el bloque blanco -->
                 <a-gltf-model 
                     src="#occluderModel" 
                     position="0 -0.2 0" 
-                    scale="8.5 8.5 8.5"
-                    material="colorWrite: false">
+                    scale="0.065 0.065 0.065"
+                    material="transparent: true; opacity: 0; colorWrite: false;">
                 </a-gltf-model>
 
-                <!-- 2. La Corona (Rotación corregida y bajada a su posición natural) -->
+                <!-- 2. La Corona -->
                 <a-gltf-model 
                     src="#crownModel" 
-                    position="0 -0.7 0.1" 
+                    position="0 0.1 -0.1" 
                     rotation="0 0 0" 
-                    scale="8.5 8.5 8.5">
+                    scale="1.2 1.2 1.2">
                 </a-gltf-model>
-
-            </a-entity>
 
             </a-entity>
 
