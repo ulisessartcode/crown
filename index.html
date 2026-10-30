@@ -41,6 +41,7 @@
                 <a-asset-item id="crownModel" src="objects/crown_.glb"></a-asset-item>
                 <a-asset-item id="espinaModel" src="objects/espina_.glb"></a-asset-item>
                 <!-- CORREGIDO: Declaramos el faceMeshModel que estás usando abajo -->
+                <a-asset-item id="occluderModel" src="objects/head_occluder.glb"></a-asset-item>
                 <a-asset-item id="faceMeshModel" src="objects/faceMesh.glb"></a-asset-item>
             </a-assets>
 
@@ -53,7 +54,17 @@
             <!-- Anclaje al rostro -->
             <a-entity mindar-face-target="anchorIndex: 10">
                 
-                <!-- 1. El FaceMesh se convierte en tu oclusor perfecto en tiempo real -->
+
+                  <!-- 1. El Oclusor invisible -->
+                <a-gltf-model 
+                    src="#occluderModel" 
+                    position="0 -0.68 -0.1" 
+                    rotation="0 180 0" 
+                    scale="8.5 8.5 8.5"
+                    occluder-material>
+                </a-gltf-model>
+                
+                <!-- 2. El FaceMesh se convierte en tu oclusor perfecto en tiempo real -->
                 <a-gltf-model 
                     src="#faceMeshModel" 
                     position="0 -0.68 -0.1" 
@@ -62,7 +73,7 @@
                     occluder-material>
                 </a-gltf-model>
 
-                <!-- 2. La Corona de atrás -->
+                <!-- 3. La Corona de atrás -->
                 <a-gltf-model 
                     src="#crownModel" 
                     position="0.0 -0.68 -0.3" 
@@ -70,7 +81,7 @@
                     scale="8.5 8.5 8.5">
                 </a-gltf-model>
 
-                <!-- 3. La parte delantera sobre la nariz (espina_.glb) -->
+                <!-- 4. La parte delantera sobre la nariz (espina_.glb) -->
                 <a-gltf-model 
                     src="#espinaModel" 
                     position="-0.0 -0.68 -0.1" 
