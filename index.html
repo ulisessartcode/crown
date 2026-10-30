@@ -1,1 +1,28 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- Cargamos A-Frame y MindAR para Face Tracking -->
+    <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.2/dist/mindar-face-aframe.prod.js"></script>
+    <style>
+      body { margin: 0; overflow: hidden; }
+    </style>
+  </head>
+  <body>
+    <!-- Configuración del face tracking -->
+    <a-scene mindar-face embedded color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
+      <a-assets>
+        <!-- Ruta a tu modelo 3D convertido a GLB -->
+        <a-asset-item id="crownModel" src="./Ulisess_Crown_COPY_v3/objects/crown.glb"></a-asset-item>
+      </a-assets>
 
+      <a-camera active="false" position="0 0 0"></a-camera>
+
+      <!-- Anclaje a la cabeza del usuario -->
+      <a-entity mindar-face-target="anchorIndex: 10">
+        <a-gltf-model position="0 0.2 0" scale="0.5 0.5 0.5" src="#crownModel"></a-gltf-model>
+      </a-entity>
+    </a-scene>
+  </body>
+</html>
