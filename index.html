@@ -1,32 +1,75 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
-    <meta charset="utf-8">
-    <title>WebAR Face Filter</title>
-    <!-- Incluir A-Frame y MindAR -->
-    <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Filtro de Corona AR con Oclusión</title>
+    
+    <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-face-aframe.prod.js"></script>
+
+    <script>
+        // Componente especial para crear la máscara de oclusión invisible en A-Frame
+        AFRAME.registerComponent('occluder', {
+            init: function () {
+                this.el.addEventListener('model-loaded', () => {
+                    this.el.object3D.traverse((node) => {
+                        if (node.isMesh) {
+                            node.material.colorWrite = false; // Hace que el objeto sea invisible pero bloquee lo que hay detrás
+                        }
+                    });
+                });
+            }
+        });
+    </script>
+
+    <style>
+        body { margin: 0; overflow: hidden; background-color: #000; }
+        .example-container { position: absolute; width: 100%; height: 100%; }
+    </style>
 </head>
 <body>
-    <a-scene mindar-face="imageTargetSrc: false; uiLoading: yes; uiError: yes; uiScanning: yes;" embedded color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights: true">
-        <a-assets>
-            <!-- Tu modelo exportado desde Blender -->
-            <a-asset-item id="crownModel" src="objects/crown_.glb"></a-asset-item>
-        </a-assets>
 
-        <!-- Cámara de seguimiento facial de MindAR -->
-        <a-camera active="false" position="0 0 0"></a-camera>
+    <div class="example-container">
+        <a-scene mindar-face embedded color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights: true" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
+            
+            <a-assets>
+                <!-- Tu corona texturizada -->
+                <a-asset-item id="crownModel" src="objects/crown_.glb"></a-asset-item>
+                <!-- La máscara de oclusión de la cabeza -->
+                <a-asset-item id="occluderModel" src="objects/head_occluder.glb"></a-asset-item>
+            </a-assets>
 
-        <!-- Anclaje a la cabeza (Anchor point 10 zona superior) -->
-        <a-entity mindar-face-target="anchorIndex: 10">
-            <!-- Entidad del modelo 3D con ajuste de posición, rotación y escala -->
-            <a-gltf-model 
-                src="#crownModel" 
-                position="0 -0.5 -0.1" 
-                rotation="0 180 0" 
-                scale="8.5 8.5 8.5">
-            </a-gltf-model>
-        </a-entity>
-    </a-scene>
+            <a-camera active="true" position="0 0 0"></a-camera>
+
+            <!-- Iluminación para resaltar los colores y texturas de tu corona -->
+            <a-light type="ambient" intensity="1.5"></a-light>
+            <a-light type="directional" position="0 1 2" intensity="2"></a-light>
+
+            <!-- Anclaje al rostro del usuario -->
+            <a-entity mindar-face-target="anchorIndex: 10">
+                
+                <!-- 1. Máscara de oclusión (Oculta la parte trasera de la corona) -->
+                <a-gltf-model 
+                    src="#occluderModel" 
+                    occluder
+                    position="0 -0.1 0" 
+                    rotation="0 180 0" 
+                    scale="1 1 1">
+                </a-gltf-model>
+
+                <!-- 2. Tu Corona 3D con color y texturas -->
+                <a-gltf-model 
+                    src="#crownModel" 
+                    position="0 -0.2 -0.1" 
+                    rotation="0 180 0" 
+                    scale="8.5 8.5 8.5">
+                </a-gltf-model>
+
+            </a-entity>
+
+        </a-scene>
+    </div>
+
 </body>
 </html>
