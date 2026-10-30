@@ -3,29 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Modelo 3D - Corona</title>
-    <script type="module" src="https://unpkg.com/@model-viewer/public@v3.4.0/dist/model-viewer.min.js"></script>
+    <title>Corona 3D</title>
+    <!-- Importar model-viewer -->
+    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
     <style>
-        body {
-            margin: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: #111;
-        }
-        model-viewer {
-            width: 100%;
-            height: 100vh;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { width: 100vw; height: 100vh; background-color: #111; overflow: hidden; }
+        model-viewer { width: 100%; height: 100%; }
     </style>
 </head>
 <body>
 
-    <!-- Ruta exacta ajustada -->
     <model-viewer 
         src="objects/crown_.glb" 
-        alt="Modelo 3D de Corona" 
+        alt="Modelo 3D"
         auto-rotate 
         camera-controls 
         shadow-intensity="1">
