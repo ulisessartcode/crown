@@ -3,25 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Filtro de Corona AR con Oclusión</title>
+    <title>Filtro de Corona AR</title>
     
     <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-face-aframe.prod.js"></script>
-
-    <script>
-        // Componente especial para crear la máscara de oclusión invisible en A-Frame
-        AFRAME.registerComponent('occluder', {
-            init: function () {
-                this.el.addEventListener('model-loaded', () => {
-                    this.el.object3D.traverse((node) => {
-                        if (node.isMesh) {
-                            node.material.colorWrite = false; // Hace que el objeto sea invisible pero bloquee lo que hay detrás
-                        }
-                    });
-                });
-            }
-        });
-    </script>
 
     <style>
         body { margin: 0; overflow: hidden; background-color: #000; }
@@ -34,38 +19,28 @@
         <a-scene mindar-face embedded color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights: true" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
             
             <a-assets>
-                <!-- Tu corona texturizada -->
                 <a-asset-item id="crownModel" src="objects/crown_.glb"></a-asset-item>
-                <!-- La máscara de oclusión de la cabeza -->
-                <a-asset-item id="occluderModel" src="objects/head_occluder.glb"></a-asset-item>
             </a-assets>
 
             <a-camera active="true" position="0 0 0"></a-camera>
 
-            <!-- Iluminación para resaltar los colores y texturas de tu corona -->
+            <!-- Luces ambientales y direccionales para darle brillo metálico -->
             <a-light type="ambient" intensity="1.5"></a-light>
             <a-light type="directional" position="0 1 2" intensity="2"></a-light>
 
-            <!-- Anclaje al rostro del usuario -->
+            <!-- Anclaje al rostro -->
             <a-entity mindar-face-target="anchorIndex: 10">
-                
-                <!-- 1. Máscara de oclusión (Oculta la parte trasera de la corona) -->
-                <a-gltf-model 
-                    src="#occluderModel" 
-                    occluder
-                    position="0 -0.1 0" 
-                    rotation="0 180 0" 
-                    scale="1 1 1">
-                </a-gltf-model>
-
-                <!-- 2. Tu Corona 3D con color y texturas -->
+                <!-- 
+                  - scale: Aumentado a "8.5" para que tenga el tamaño real de una corona sobre la cabeza.
+                  - position: "0 -0.2 -0.1" (baja la corona para que no flote arriba).
+                  - rotation: "0 180 0" para corregir la dirección.
+                -->
                 <a-gltf-model 
                     src="#crownModel" 
-                    position="0 -0.2 -0.1" 
+                    position="0 -0.7 -0.1" 
                     rotation="0 180 0" 
                     scale="8.5 8.5 8.5">
                 </a-gltf-model>
-
             </a-entity>
 
         </a-scene>
