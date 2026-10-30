@@ -1,50 +1,43 @@
 <!DOCTYPE html>
-<html lang="es">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Filtro de Corona AR</title>
-    
-    <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
+    <meta charset="utf-8">
+    <title>WebAR Face Filter</title>
+    <!-- Incluir A-Frame y MindAR -->
+    <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-face-aframe.prod.js"></script>
-
-    <style>
-        body { margin: 0; overflow: hidden; background-color: #000; }
-        .example-container { position: absolute; width: 100%; height: 100%; }
-    </style>
 </head>
 <body>
+    <a-scene mindar-face="imageTargetSrc: false; uiLoading: yes; uiError: yes; uiScanning: yes;" embedded color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights: true">
+        <a-assets>
+            <!-- Tus modelos exportados -->
+            <a-asset-item id="crownModel" src="objects/crown_.glb"></a-asset-item>
+            <a-asset-item id="occluderModel" src="objects/head_occluder.glb"></a-asset-item>
+        </a-assets>
 
-    <div class="example-container">
-        <a-scene mindar-face embedded color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights: true" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
+        <!-- Cámara de seguimiento facial de MindAR -->
+        <a-camera active="false" position="0 0 0"></a-camera>
+
+        <!-- Anclaje a la cabeza -->
+        <a-entity mindar-face-target="anchorIndex: 10">
             
-            <a-assets>
-                <a-asset-item id="crownModel" src="objects/crown_.glb"></a-asset-item>
-            </a-assets>
+            <!-- 1. El Oclusor de la cabeza (oculta lo que queda atrás) -->
+            <a-gltf-model 
+                src="#occluderModel" 
+                position="0 -0.2 0" 
+                scale="0.065 0.065 0.065"
+                material="colorWrite: false">
+            </a-gltf-model>
 
-            <a-camera active="true" position="0 0 0"></a-camera>
+            <!-- 2. Tu modelo de la corona -->
+            <a-gltf-model 
+                src="#crownModel" 
+                position="0 -0.5 -0.1" 
+                rotation="0 180 0" 
+                scale="8.5 8.5 8.5">
+            </a-gltf-model>
 
-            <!-- Luces ambientales y direccionales para darle brillo metálico -->
-            <a-light type="ambient" intensity="1.5"></a-light>
-            <a-light type="directional" position="0 1 2" intensity="2"></a-light>
-
-            <!-- Anclaje al rostro -->
-            <a-entity mindar-face-target="anchorIndex: 10">
-                <!-- 
-                  - scale: Aumentado a "8.5" para que tenga el tamaño real de una corona sobre la cabeza.
-                  - position: "0 -0.2 -0.1" (baja la corona para que no flote arriba).
-                  - rotation: "0 180 0" para corregir la dirección.
-                -->
-                <a-gltf-model 
-                    src="#crownModel" 
-                    position="0 -0.65 -0.1" 
-                    rotation="0 180 0" 
-                    scale="8.5 8.5 8.5">
-                </a-gltf-model>
-            </a-entity>
-
-        </a-scene>
-    </div>
-
+        </a-entity>
+    </a-scene>
 </body>
 </html>
