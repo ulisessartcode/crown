@@ -20,7 +20,6 @@
             
             <a-assets>
                 <a-asset-item id="crownModel" src="objects/crown_.glb"></a-asset-item>
-                <a-asset-item id="occluderModel" src="objects/head_occluder.glb"></a-asset-item>
             </a-assets>
 
             <a-camera active="true" position="0 0 0"></a-camera>
@@ -32,19 +31,11 @@
             <!-- Anclaje al rostro -->
             <a-entity mindar-face-target="anchorIndex: 10">
                 
-                <!-- 1. Oclusor invisible usando opacidad total para evitar el bloque blanco -->
-                <a-gltf-model 
-                    src="#occluderModel" 
-                    position="0 0.68 0.1" 
-                    scale="8.5 8.5 8.5"
-                    material="transparent: true; opacity: 0; colorWrite: false;">
-                </a-gltf-model>
-
-              <!-- 2. La Corona: Tamaño original (8.5), rotación corregida y posicionada sobre la cabeza -->
+                <!-- Únicamente la corona con la escala 8.5 correcta y orientada -->
                 <a-gltf-model 
                     src="#crownModel" 
-                    position="0 0.68 0.1" 
-                    rotation="0 0 0" 
+                   position="0 -0.68 -0.1" 
+                    rotation="0 180 0" 
                     scale="8.5 8.5 8.5">
                 </a-gltf-model>
 
