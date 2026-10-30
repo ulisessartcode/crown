@@ -25,6 +25,28 @@
                 });
             }
         });
+
+        // NUEVO: Componente para pintar la cara de blanco y los ojos de negro
+        AFRAME.registerComponent('face-painter', {
+            init: function () {
+                this.el.addEventListener('model-loaded', () => {
+                    const mesh = this.el.getObject3D('mesh');
+                    if (mesh) {
+                        mesh.traverse((node) => {
+                            if (node.isMesh) {
+                                // Si la malla pertenece a los ojos, píntala de negro
+                                if (node.name.toLowerCase().includes('eye') || node.name.toLowerCase().includes('iris')) {
+                                    node.material = new THREE.MeshBasicMaterial({ color: 0x000000 });
+                                } else {
+                                    // El resto de la cara se pinta de blanco
+                                    node.material = new THREE.MeshBasicMaterial({ color: 0xffffff });
+                                }
+                            }
+                        });
+                    }
+                });
+            }
+        });
     </script>
 
     <style>
@@ -39,8 +61,9 @@
             
             <a-assets>
                 <a-asset-item id="crownModel" src="objects/crown_.glb"></a-asset-item>
-                <!-- 1. Declaramos el oclusor en los assets -->
                 <a-asset-item id="occluderModel" src="objects/head_occluder.glb"></a-asset-item>
+                <!-- NUEVO: Declaramos el FaceMesh en los assets -->
+                <a-asset-item id="faceMeshModel" src="objects/faceMesh.glb"></a-asset-item>
             </a-assets>
 
             <a-camera active="true" position="0 0 0"></a-camera>
@@ -52,7 +75,7 @@
             <!-- Anclaje al rostro -->
             <a-entity mindar-face-target="anchorIndex: 10">
                 
-                <!-- 2. Añadimos el oclusor con el componente invisible -->
+                <!-- 1. El Oclusor invisible -->
                 <a-gltf-model 
                     src="#occluderModel" 
                     position="0 -0.68 -0.1" 
@@ -61,7 +84,16 @@
                     occluder-material>
                 </a-gltf-model>
 
-                <!-- 3. Tu corona con la escala y posición exacta que ya tienes -->
+                <!-- NUEVO 2. El FaceMesh pintado de blanco con ojos negros -->
+                <a-gltf-model 
+                    src="#faceMeshModel" 
+                    position="0 0 0" 
+                    rotation="0 0 0" 
+                    scale="1 1 1"
+                    face-painter>
+                </a-gltf-model>
+
+                <!-- 3. Tu corona -->
                 <a-gltf-model 
                     src="#crownModel" 
                     position="0 -0.68 -0.1" 
