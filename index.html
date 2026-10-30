@@ -9,22 +9,39 @@
     <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-face-aframe.prod.js"></script>
 
     <script>
-    // Componente universal para volver cualquier modelo en un oclusor de profundidad invisible
-    AFRAME.registerComponent('occluder-material', {
-        init: function () {
-            this.el.addEventListener('model-loaded', () => {
-                const mesh = this.el.getObject3D('mesh');
-                if (mesh) {
-                    mesh.traverse((node) => {
-                        if (node.isMesh) {
-                            node.material.colorWrite = false; // Lo hace invisible (no pinta color)
-                            node.material.depthWrite = true;  // Pero mantiene la profundidad para tapar objetos
-                        }
-                    });
-                }
-            });
-        }
-    });
+        // 1. Componente para el oclusor invisible (recorta la corona)
+        AFRAME.registerComponent('occluder-material', {
+            init: function () {
+                this.el.addEventListener('model-loaded', () => {
+                    const mesh = this.el.getObject3D('mesh');
+                    if (mesh) {
+                        mesh.traverse((node) => {
+                            if (node.isMesh) {
+                                node.material.colorWrite = false; // Invisible
+                                node.material.depthWrite = true;  // Mantiene profundidad
+                            }
+                        });
+                    }
+                });
+            }
+        });
+
+        // 2. Componente para pintar la cara duplicada de tono pálido
+        AFRAME.registerComponent('pale-skin', {
+            init: function () {
+                this.el.addEventListener('model-loaded', () => {
+                    const mesh = this.el.getObject3D('mesh');
+                    if (mesh) {
+                        mesh.traverse((node) => {
+                            if (node.isMesh) {
+                                node.material.color.set('#d5d5d5'); // Tono gris/blanco pálido
+                                node.material.roughness = 0.8;
+                            }
+                        });
+                    }
+                });
+            }
+        });
     </script>
 
     <style>
@@ -40,7 +57,6 @@
             <a-assets>
                 <a-asset-item id="crownModel" src="objects/crown_.glb"></a-asset-item>
                 <a-asset-item id="espinaModel" src="objects/espina_.glb"></a-asset-item>
-                <!-- CORREGIDO: Declaramos el faceMeshModel que estás usando abajo -->
                 <a-asset-item id="faceMeshModel" src="objects/faceMesh.glb"></a-asset-item>
             </a-assets>
 
@@ -53,7 +69,7 @@
             <!-- Anclaje al rostro -->
             <a-entity mindar-face-target="anchorIndex: 10">
                 
-                <!-- 1. El FaceMesh se convierte en tu oclusor perfecto en tiempo real -->
+                <!-- 1. PRIMER FACEMESH (Invisible / Oclusor): Oculta la parte trasera de la corona -->
                 <a-gltf-model 
                     src="#faceMeshModel" 
                     position="0 -0.68 -0.1" 
@@ -77,6 +93,29 @@
                     rotation="0 180 0" 
                     scale="8.5 8.5 8.5">
                 </a-gltf-model>
+                
+                <!-- 4. SEGUNDO FACEMESH (Visible / Pálido): Muestra la piel clara sobre tu rostro -->
+                <a-gltf-model 
+                    src="#faceMeshModel" 
+                    position="0 -0.68 -0.1" 
+                    rotation="0 180 0" 
+                    scale="8.5 8.5 8.5"
+                    pale-skin>
+                </a-gltf-model>
+
+                <!-- 5. Ojo izquierdo negro -->
+                <a-sphere 
+                    position="0.03 0.05 -0.05" 
+                    scale="0.012 0.012 0.012" 
+                    material="color: #000000; roughness: 0.1">
+                </a-sphere>
+
+                <!-- 6. Ojo derecho negro -->
+                <a-sphere 
+                    position="-0.03 0.05 -0.05" 
+                    scale="0.012 0.012 0.012" 
+                    material="color: #000000; roughness: 0.1">
+                </a-sphere>
 
             </a-entity>
 
