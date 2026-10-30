@@ -9,22 +9,22 @@
     <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-face-aframe.prod.js"></script>
 
     <script>
-        // Componente para hacer que el oclusor sea invisible pero oculte la parte trasera
-        AFRAME.registerComponent('occluder-material', {
-            init: function () {
-                this.el.addEventListener('model-loaded', () => {
-                    const mesh = this.el.getObject3D('mesh');
-                    if (mesh) {
-                        mesh.traverse((node) => {
-                            if (node.isMesh) {
-                                node.material.colorWrite = false;
-                                node.material.depthWrite = true;
-                            }
-                        });
-                    }
-                });
-            }
-        });
+    // Componente universal para volver cualquier modelo en un oclusor de profundidad invisible
+    AFRAME.registerComponent('occluder-material', {
+        init: function () {
+            this.el.addEventListener('model-loaded', () => {
+                const mesh = this.el.getObject3D('mesh');
+                if (mesh) {
+                    mesh.traverse((node) => {
+                        if (node.isMesh) {
+                            node.material.colorWrite = false; // Lo hace invisible (no pinta color)
+                            node.material.depthWrite = true;  // Pero mantiene la profundidad para tapar objetos
+                        }
+                    });
+                }
+            });
+        }
+    });
     </script>
 
     <style>
@@ -40,7 +40,8 @@
             <a-assets>
                 <a-asset-item id="crownModel" src="objects/crown_.glb"></a-asset-item>
                 <a-asset-item id="espinaModel" src="objects/espina_.glb"></a-asset-item>
-                <a-asset-item id="occluderModel" src="objects/head_occluder.glb"></a-asset-item>
+                <!-- CORREGIDO: Declaramos el faceMeshModel que estás usando abajo -->
+                <a-asset-item id="faceMeshModel" src="objects/faceMesh.glb"></a-asset-item>
             </a-assets>
 
             <a-camera active="true" position="0 0 0"></a-camera>
@@ -52,9 +53,9 @@
             <!-- Anclaje al rostro -->
             <a-entity mindar-face-target="anchorIndex: 10">
                 
-                <!-- 1. El Oclusor invisible -->
+                <!-- 1. El FaceMesh se convierte en tu oclusor perfecto en tiempo real -->
                 <a-gltf-model 
-                    src="#occluderModel" 
+                    src="#faceMeshModel" 
                     position="0 -0.68 -0.1" 
                     rotation="0 180 0" 
                     scale="8.5 8.5 8.5"
@@ -76,7 +77,6 @@
                     rotation="0 180 0" 
                     scale="8.5 8.5 8.5">
                 </a-gltf-model>
-                
 
             </a-entity>
 
