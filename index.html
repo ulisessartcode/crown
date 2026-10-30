@@ -30,10 +30,10 @@
             <a-light type="ambient" intensity="1.5"></a-light>
             <a-light type="directional" position="0 1 2" intensity="2"></a-light>
 
-            <!-- Anclaje al rostro -->
+<!-- Anclaje al rostro -->
             <a-entity mindar-face-target="anchorIndex: 10">
                 
-                <!-- 1. El Oclusor: oculta la parte trasera de la corona tras la cabeza -->
+                <!-- 1. El Oclusor -->
                 <a-gltf-model 
                     src="#occluderModel" 
                     position="0 -0.2 0" 
@@ -41,13 +41,15 @@
                     material="colorWrite: false">
                 </a-gltf-model>
 
-                <!-- 2. La Corona: ajustada para que repose sobre la cabeza -->
+                <!-- 2. La Corona (Rotación corregida y bajada a su posición natural) -->
                 <a-gltf-model 
                     src="#crownModel" 
-                    position="0 0.7 -0.3" 
-                    rotation="0 180 0" 
+                    position="0 -0.3 -0.1" 
+                    rotation="0 0 0" 
                     scale="8.5 8.5 8.5">
                 </a-gltf-model>
+
+            </a-entity>
 
             </a-entity>
 
