@@ -8,7 +8,7 @@
     <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-face-aframe.prod.js"></script>
 </head>
 <body>
-    <a-scene mindar-face embedded color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights: true">
+    <a-scene mindar-face="imageTargetSrc: false; uiLoading: yes; uiError: yes; uiScanning: yes;" embedded color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights: true">
         <a-assets>
             <!-- Tu modelo exportado desde Blender -->
             <a-asset-item id="crownModel" src="objects/crown_.glb"></a-asset-item>
@@ -17,12 +17,12 @@
         <!-- Cámara de seguimiento facial de MindAR -->
         <a-camera active="false" position="0 0 0"></a-camera>
 
-        <!-- Anclaje a la cabeza (Anchor point 168 o zona superior) -->
+        <!-- Anclaje a la cabeza (Anchor point 10 zona superior) -->
         <a-entity mindar-face-target="anchorIndex: 10">
-            <!-- Entidad del modelo 3D con ajuste de posición y escala -->
+            <!-- Entidad del modelo 3D con ajuste de posición, rotación y escala -->
             <a-gltf-model 
                 src="#crownModel" 
-                position="0 -0.4 -0.1" 
+                position="0 -0.5 -0.1" 
                 rotation="0 180 0" 
                 scale="8.5 8.5 8.5">
             </a-gltf-model>
