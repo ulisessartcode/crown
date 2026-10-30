@@ -1,28 +1,35 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <!-- Cargamos A-Frame y MindAR para Face Tracking -->
-    <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.2/dist/mindar-face-aframe.prod.js"></script>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modelo 3D - Corona</title>
+    <script type="module" src="https://unpkg.com/@model-viewer/public@v3.4.0/dist/model-viewer.min.js"></script>
     <style>
-      body { margin: 0; overflow: hidden; }
+        body {
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #111;
+        }
+        model-viewer {
+            width: 100%;
+            height: 100vh;
+        }
     </style>
-  </head>
-  <body>
-    <!-- Configuración del face tracking -->
-    <a-scene mindar-face embedded color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
-      <a-assets>
-        <!-- Ruta a tu modelo 3D convertido a GLB -->
-        <a-asset-item id="crownModel" src="./Ulisess_Crown_COPY_v3/objects/crown.glb"></a-asset-item>
-      </a-assets>
+</head>
+<body>
 
-      <a-camera active="false" position="0 0 0"></a-camera>
+    <!-- Ruta exacta ajustada -->
+    <model-viewer 
+        src="objects/crown_.glb" 
+        alt="Modelo 3D de Corona" 
+        auto-rotate 
+        camera-controls 
+        shadow-intensity="1">
+    </model-viewer>
 
-      <!-- Anclaje a la cabeza del usuario -->
-      <a-entity mindar-face-target="anchorIndex: 10">
-        <a-gltf-model position="0 0.2 0" scale="0.5 0.5 0.5" src="#crownModel"></a-gltf-model>
-      </a-entity>
-    </a-scene>
-  </body>
+</body>
 </html>
