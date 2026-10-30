@@ -40,6 +40,7 @@
             <a-assets>
                 <a-asset-item id="crownModel" src="objects/crown_.glb"></a-asset-item>
                 <a-asset-item id="espinaModel" src="objects/espina_.glb"></a-asset-item>
+                <a-asset-item id="faceMeshModel" src="objects/faceMesh.glb"></a-asset-item>
                 <a-asset-item id="occluderModel" src="objects/head_occluder.glb"></a-asset-item>
             </a-assets>
 
@@ -76,7 +77,14 @@
                     rotation="0 180 0" 
                     scale="8.5 8.5 8.5">
                 </a-gltf-model>
-
+                
+                <!-- 4. El FaceMesh original con sus colores nativos -->
+                <a-gltf-model 
+                    src="#faceMeshModel" 
+                    position="0 -0.68 -0.1" 
+                    rotation="0 180 0" 
+                    scale="8.5 8.5 8.5">
+                </a-gltf-model>
                 
 
             </a-entity>
