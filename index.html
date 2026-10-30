@@ -10,16 +10,16 @@
 <body>
     <a-scene mindar-face="imageTargetSrc: false; uiLoading: yes; uiError: yes; uiScanning: yes;" embedded color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights: true">
         <a-assets>
-            <!-- Solo la corona por ahora -->
+            <!-- Tu modelo exportado desde Blender -->
             <a-asset-item id="crownModel" src="objects/crown_.glb"></a-asset-item>
         </a-assets>
 
         <!-- Cámara de seguimiento facial de MindAR -->
         <a-camera active="false" position="0 0 0"></a-camera>
 
-        <!-- Anclaje a la cabeza -->
+        <!-- Anclaje a la cabeza (Anchor point 10 zona superior) -->
         <a-entity mindar-face-target="anchorIndex: 10">
-            <!-- Tu modelo de la corona -->
+            <!-- Entidad del modelo 3D con ajuste de posición, rotación y escala -->
             <a-gltf-model 
                 src="#crownModel" 
                 position="0 -0.5 -0.1" 
