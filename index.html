@@ -10,9 +10,8 @@
 <body>
     <a-scene mindar-face="imageTargetSrc: false; uiLoading: yes; uiError: yes; uiScanning: yes;" embedded color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights: true">
         <a-assets>
-            <!-- Tus modelos exportados -->
+            <!-- Solo la corona por ahora -->
             <a-asset-item id="crownModel" src="objects/crown_.glb"></a-asset-item>
-            <a-asset-item id="occluderModel" src="objects/head_occluder.glb"></a-asset-item>
         </a-assets>
 
         <!-- Cámara de seguimiento facial de MindAR -->
@@ -20,23 +19,13 @@
 
         <!-- Anclaje a la cabeza -->
         <a-entity mindar-face-target="anchorIndex: 10">
-            
-            <!-- 1. El Oclusor de la cabeza (oculta lo que queda atrás) -->
-            <a-gltf-model 
-                src="#occluderModel" 
-                position="0 -0.2 0" 
-                scale="0.065 0.065 0.065"
-                material="colorWrite: false">
-            </a-gltf-model>
-
-            <!-- 2. Tu modelo de la corona -->
+            <!-- Tu modelo de la corona -->
             <a-gltf-model 
                 src="#crownModel" 
                 position="0 -0.5 -0.1" 
                 rotation="0 180 0" 
                 scale="8.5 8.5 8.5">
             </a-gltf-model>
-
         </a-entity>
     </a-scene>
 </body>
